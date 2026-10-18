@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ง้อเค้าหน่อยน้าาา ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pastel-pink': '#FFF0F5',
+                        'rose-pink': '#FFB6C1',
+                        'hot-pink': '#FF69B4',
+                        'warm-red': '#FF4D6D',
+                        'soft-cream': '#FFF9F5',
+                    },
+                    fontFamily: {
+                        prompt: ['Prompt', 'sans-serif'],
+                        mitr: ['Mitr', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Mobile Viewport Guardrails */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(180deg, #FFF0F5 0%, #FFE5EC 50%, #FFD6E0 100%);
+            min-height: 100vh;
+        }
+
+        /* Floating background hearts animation */
+        .heart-particle {
+            position: fixed;
+            bottom: -50px;
+            animation: floatUp 7s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Touch Ripple Burst Animation */
+        .touch-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            animation: touchBurst 0.8s ease-out forwards;
+        }
+
+        @keyframes touchBurst {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -100px) scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        /* Custom Bounce & Pulse */
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        .animate-pulse-gentle {
+            animation: gentlePulse 2s infinite ease-in-out;
+        }
+
+        /* Stamp Effect for Coupons */
+        .stamp-badge {
+            animation: stampIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes stampIn {
+            0% { transform: scale(2) rotate(-15deg); opacity: 0; }
+            100% { transform: scale(1) rotate(-12deg); opacity: 0.95; }
+        }
+
+        /* Prevent scrollbars */
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="text-gray-800 relative pb-12 select-none" onclick="createTouchRipple(event)">
+
+    <!-- Floating Background Hearts Container -->
+    <div id="heartContainer" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Sticky Audio Control Toggle -->
+    <div class="fixed top-3 right-3 z-50">
+        <button id="musicToggleBtn" onclick="toggleMusic(event)" class="bg-white/90 backdrop-blur-md border border-pink-200 text-pink-600 px-3.5 py-2 rounded-full shadow-lg hover:bg-pink-50 transition-all flex items-center gap-2 text-xs font-semibold active:scale-95">
+            <i id="musicIcon" class="fas fa-music text-pink-500 animate-spin" style="animation-duration: 3s;"></i>
+            <span id="musicText">เปิดเสียง</span>
+        </button>
+    </div>
+
+    <!-- MAIN MOBILE CONTAINER -->
+    <main class="relative z-10 max-w-md mx-auto px-4 pt-6">
+
+        <!-- HEADER BANNER -->
+        <header class="text-center mb-6">
+            <div class="inline-block bg-white/80 backdrop-blur-sm border border-pink-200 px-3 py-1 rounded-full text-pink-600 font-mitr text-xs font-medium mb-2 shadow-sm">
+                <i class="fas fa-heart text-rose-500 mr-1 animate-pulse"></i> ทำมาจากใจคนที่ง้อไม่เป็น
+            </div>
+            <h1 class="text-3xl font-bold font-mitr text-rose-600 mb-1.5 drop-shadow-sm">
+                เค้าขอโทษน้าาา ❤️
+            </h1>
+            <p class="text-gray-600 text-xs sm:text-sm">
+                อย่างน้อยถ้ายังไม่หายโกรธก็ลองอ่านดูสักนิดเพราะตั้งใจทำจัดๆๆ
+            </p>
+        </header>
+
+        <!-- MAIN DECISION AREA (MOBILE TOUCH-FRIENDLY) -->
+        <section class="bg-white/90 backdrop-blur-md rounded-3xl p-5 shadow-xl border-2 border-pink-100 text-center mb-6 relative overflow-hidden">
+            <div id="characterAvatar" class="w-28 h-28 mx-auto mb-3 relative">
+                <!-- Sad Avatar -->
+                <div id="sadAvatar" class="w-full h-full flex items-center justify-center text-7xl transition-transform duration-300">
+                    🥺
+                </div>
+                <!-- Happy Avatar -->
+                <div id="happyAvatar" class="hidden w-full h-full flex items-center justify-center text-7xl animate-bounce">
+                    🥰
+                </div>
+            </div>
+
+            <h2 id="mainQuestion" class="text-xl font-bold text-gray-800 mb-1 font-mitr">
+                หายโกรธหรือยังอ่ะ?????? 💖
+            </h2>
+            <p id="subQuestion" class="text-gray-500 text-xs mb-5">
+                (กดปุ่มสีชมพูตรงนี้ได้เลยนะคะ 👇)
+            </p>
+
+            <!-- PLAYFUL INTERACTIVE BUTTON GROUP -->
+            <div id="buttonGroup" class="relative min-h-[160px] flex flex-col items-center justify-center gap-3 py-2 w-full">
+                <!-- FORGIVE BUTTON (PRIMARY - TOUCH FRIENDLY MIN 48px HEIGHT) -->
+                <button id="forgiveBtn" onclick="handleForgive(event)" class="w-full min-h-[52px] px-6 py-3.5 bg-gradient-to-r from-rose-500 to-hot-pink text-white font-bold text-base rounded-2xl shadow-lg shadow-pink-200 hover:shadow-pink-300/50 active:scale-95 transition-all duration-300 animate-pulse-gentle z-20 flex items-center justify-center gap-2">
+                    <i class="fas fa-heart text-lg"></i>
+                    <span id="forgiveText">ยกโทษให้แฟร้งค์ที 💕</span>
+                </button>
+
+                <!-- STILL ANGRY BUTTON (TRICKY DODGING / SHRINKING BUTTON) -->
+                <button id="angryBtn" 
+                        ontouchstart="handleAngryInteraction(event)" 
+                        onclick="handleAngryInteraction(event)" 
+                        class="w-full min-h-[48px] px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium text-xs sm:text-sm rounded-2xl border border-gray-300 transition-all duration-200 z-10 shadow-sm active:scale-90">
+                    <span id="angryBtnText">ยังไม่หายโกรธ 😤</span>
+                </button>
+            </div>
+
+            <!-- SUCCESS CELEBRATION BOX -->
+            <div id="successBanner" class="hidden mt-4 p-5 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border border-pink-200 text-center animate-fade-in shadow-inner">
+                <div class="text-4xl mb-2">🎉 🥳 💖</div>
+                <h3 class="text-2xl font-bold font-mitr text-rose-600 mb-1.5">ขอบคุณน้าาาา!</h3>
+                <p class="text-gray-700 text-xs sm:text-sm leading-relaxed">
+                    ขอบคุณที่เมตตาเค้านะคะ! เค้าสัญญาว่าจะทำตัวดีๆ เป็นเด็กดี ไม่ทำให้เธอเสียใจอีกแล้ว รักคุณที่สุดในโลกเลย! ❤️🥰✨
+                </p>
+            </div>
+        </section>
+
+        <!-- EDITABLE LOVE LETTER SECTION -->
+        <section class="mb-6">
+            <div class="bg-white/85 backdrop-blur-md rounded-3xl p-5 shadow-lg border border-pink-100">
+                <div class="flex items-center justify-between mb-4 border-b border-pink-100 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center text-base">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold font-mitr text-gray-800">จดหมายสารภาพผิด 💌</h3>
+                            <p class="text-[11px] text-gray-400">กดปุ่มดินสอเพื่อแก้ไขข้อความได้เลย</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleEditLetter(event)" class="w-8 h-8 rounded-full bg-pink-50 text-pink-500 border border-pink-200 flex items-center justify-center text-xs shadow-sm active:scale-90">
+                        <i id="editIcon" class="fas fa-pencil"></i>
+                    </button>
+                </div>
+
+                <!-- Letter Content Area -->
+                <div id="letterContainer" class="bg-gradient-to-br from-rose-50/50 to-pink-50/50 border border-pink-200 rounded-2xl p-4 text-gray-700 text-xs sm:text-sm leading-relaxed relative">
+                    <!-- Display View -->
+                    <div id="letterDisplay" class="space-y-2 font-mitr">
+                        <p id="letterTextP1">คือไม่รู้จะพูดยังไง พูดไปก็แก้ตัวเปล่าแต่เค้ารับรู้ทุกเรื่องนะแต่ไม่รู้จะตอบยังไง ขอโทษนะคับจุ๊บๆ</p>
+                        <p class="text-right text-xs font-bold text-pink-500 pt-1" id="letterSign">- รักเธอที่สุดเสมอ ❤️</p>
+                    </div>
+
+                    <!-- Editable Form (Hidden initially) -->
+                    <div id="letterEditForm" class="hidden space-y-3">
+                        <textarea id="letterInput" rows="5" class="w-full p-2.5 border border-pink-300 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white" placeholder="พิมพ์ข้อความง้อแฟนที่นี่..."></textarea>
+                        <button onclick="saveLetter(event)" class="w-full py-2.5 bg-rose-500 text-white font-bold text-xs rounded-xl shadow active:scale-95 transition-all">
+                            บันทึกข้อความ ❤️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOUCH COUPONS SECTION -->
+        <section class="mb-6">
+            <div class="bg-white/85 backdrop-blur-md rounded-3xl p-5 shadow-lg border border-pink-100">
+                <div class="flex items-center gap-2.5 mb-4 border-b border-pink-100 pb-3">
+                    <div class="w-9 h-9 rounded-full bg-pink-100 text-pink-500 flex items-center justify-center text-base">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold font-mitr text-gray-800">คูปองง้อแฟนสุดพิเศษ 🎟️</h3>
+                        <p class="text-[11px] text-gray-400">แตะเพื่อกดรับสิทธิ์ได้ทันที</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <!-- Coupon 1 -->
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-3.5 relative overflow-hidden flex items-center justify-between shadow-sm active:scale-98 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">🧋</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-xs sm:text-sm font-mitr">ยอมกินของหวานด้วย1วัน</h4>
+                                <p class="text-[10px] text-gray-500 mt-0.5">หวานเท่าไหร่สั่งเลย เค้าเลี้ยงเอง!</p>
+                            </div>
+                        </div>
+                        <button onclick="redeemCoupon(this, event)" class="min-h-[40px] px-3.5 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold shadow-sm active:scale-90 transition-all flex-shrink-0">
+                            กดใช้ ❤️
+                        </button>
+                        <div class="stamp-badge hidden absolute right-3 top-2 border-2 border-rose-500 text-rose-500 font-bold text-xs px-2 py-1 rounded-md transform -rotate-12 bg-white/90">
+                            ใช้แล้ว ❤️
+                        </div>
+                    </div>
+
+                    <!-- Coupon 2 -->
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-3.5 relative overflow-hidden flex items-center justify-between shadow-sm active:scale-98 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">🤐</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-xs sm:text-sm font-mitr">คูปองยอมให้บ่น 1 วัน</h4>
+                                <p class="text-[10px] text-gray-500 mt-0.5">พูดอะไรเค้าจะพยักหน้าสำนึกผิด!</p>
+                            </div>
+                        </div>
+                        <button onclick="redeemCoupon(this, event)" class="min-h-[40px] px-3.5 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold shadow-sm active:scale-90 transition-all flex-shrink-0">
+                            กดใช้ ❤️
+                        </button>
+                        <div class="stamp-badge hidden absolute right-3 top-2 border-2 border-rose-500 text-rose-500 font-bold text-xs px-2 py-1 rounded-md transform -rotate-12 bg-white/90">
+                            ใช้แล้ว ❤️
+                        </div>
+                    </div>
+
+                    <!-- Coupon 3 -->
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-3.5 relative overflow-hidden flex items-center justify-between shadow-sm active:scale-98 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">💆‍♀️</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-xs sm:text-sm font-mitr">ยอมทุกอย่าง 1 วัน</h4>
+                                <p class="text-[10px] text-gray-500 mt-0.5">ทุกอย่างที่ไม่เกินไปอิอิ</p>
+                            </div>
+                        </div>
+                        <button onclick="redeemCoupon(this, event)" class="min-h-[40px] px-3.5 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold shadow-sm active:scale-90 transition-all flex-shrink-0">
+                            กดใช้ ❤️
+                        </button>
+                        <div class="stamp-badge hidden absolute right-3 top-2 border-2 border-rose-500 text-rose-500 font-bold text-xs px-2 py-1 rounded-md transform -rotate-12 bg-white/90">
+                            ใช้แล้ว ❤️
+                        </div>
+                    </div>
+
+                    <!-- Coupon 4 -->
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-3.5 relative overflow-hidden flex items-center justify-between shadow-sm active:scale-98 transition-all">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">🍣</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-xs sm:text-sm font-mitr">เลี้ยงข้าว1มื้อ</h4>
+                                <p class="text-[10px] text-gray-500 mt-0.5">ชาบู แซลมอน หมูกระทะ ปักหมุดเลย!</p>
+                            </div>
+                        </div>
+                        <button onclick="redeemCoupon(this, event)" class="min-h-[40px] px-3.5 py-1.5 bg-rose-500 text-white rounded-xl text-xs font-bold shadow-sm active:scale-90 transition-all flex-shrink-0">
+                            กดใช้ ❤️
+                        </button>
+                        <div class="stamp-badge hidden absolute right-3 top-2 border-2 border-rose-500 text-rose-500 font-bold text-xs px-2 py-1 rounded-md transform -rotate-12 bg-white/90">
+                            ใช้แล้ว ❤️
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOVE TAPPER MINI BOX -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-rose-400 to-hot-pink text-white rounded-3xl p-5 shadow-lg text-center relative overflow-hidden">
+                <h3 class="font-bold font-mitr text-base mb-1">กล่องสุ่มส่งความรัก 🎁</h3>
+                <p class="text-xs opacity-90 mb-3">แตะหน้าจอตรงไหนก็ได้ เพื่อปล่อยหัวใจลอย!</p>
+                <button onclick="burstHearts(event)" class="px-5 py-2.5 bg-white text-rose-600 font-bold text-xs rounded-xl shadow active:scale-90 transition-all">
+                    แตะรัวๆ ส่งหัวใจ 💕
+                </button>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-[11px] text-gray-500 pb-6">
+            <p>สร้างด้วยความตั้งใจง้อที่สุดจากแฟร้งค์ ❤️</p>
+        </footer>
+
+    </main>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        /* -------------------------------------------------------------
+         * 1. FLOATING BACKGROUND PARTICLES
+         * ------------------------------------------------------------- */
+        function createFloatingHearts() {
+            const container = document.getElementById('heartContainer');
+            const hearts = ['❤️', '💖', '🌸', '💕', '✨', '💗'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 95 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 0.8 + 1) + 'rem';
+                
+                container.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 7500);
+            }, 700);
+        }
+
+        /* -------------------------------------------------------------
+         * 2. TOUCH RIPPLE EFFECTS (SCREEN TAP BURST)
+         * ------------------------------------------------------------- */
+        function createTouchRipple(e) {
+            // Prevent triggering inside buttons if needed
+            const heart = document.createElement('div');
+            heart.className = 'touch-heart';
+            heart.innerText = ['💖', '💕', '✨', '🌸', '❤️'][Math.floor(Math.random() * 5)];
+            
+            const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
+            const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+
+            heart.style.left = `${x}px`;
+            heart.style.top = `${y}px`;
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 800);
+            playTapSound();
+        }
+
+        /* -------------------------------------------------------------
+         * 3. AUDIO SYNTHESIZER (WEB AUDIO API - CUTE TONES)
+         * ------------------------------------------------------------- */
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let musicInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playTapSound() {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            } catch (e) {}
+        }
+
+        function playSoftMelody() {
+            if (!audioCtx || !isMusicPlaying) return;
+
+            const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23];
+            const note = notes[Math.floor(Math.random() * notes.length)];
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.05, audioCtx.currentTime + 0.2);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.9);
+        }
+
+        function playCelebrationSound() {
+            initAudio();
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    if (!audioCtx) return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                }, i * 90);
+            });
+        }
+
+        function toggleMusic(e) {
+            if (e) e.stopPropagation();
+            initAudio();
+            const icon = document.getElementById('musicIcon');
+            const text = document.getElementById('musicText');
+
+            if (!isMusicPlaying) {
+                isMusicPlaying = true;
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                text.innerText = 'ปิดเสียง';
+                icon.classList.add('animate-spin');
+                musicInterval = setInterval(playSoftMelody, 800);
+            } else {
+                isMusicPlaying = false;
+                text.innerText = 'เปิดเสียง';
+                icon.classList.remove('animate-spin');
+                clearInterval(musicInterval);
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 4. MISCHIEVOUS "STILL ANGRY" BUTTON (GROW / SHRINK / DODGE)
+         * ------------------------------------------------------------- */
+        const angryTexts = [
+            "ผิดไปแล้ว 🥺",
+            "อย่าเด้้้้ 😭",
+            "ขอร้องเลยยยยยย 💕",
+            "อย่าโกรธกันเด้้้้ 🙏",
+            "ขอโทษคับ 🥰",
+            "ผิดไปล่ะจ้ะ 😜"
+        ];
+        let angryCount = 0;
+        let forgiveScale = 1;
+
+        function handleAngryInteraction(e) {
+            if (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+
+            const angryBtn = document.getElementById('angryBtn');
+            const angryBtnText = document.getElementById('angryBtnText');
+            const forgiveBtn = document.getElementById('forgiveBtn');
+
+            // 1. Change text
+            angryBtnText.innerText = angryTexts[angryCount % angryTexts.length];
+            angryCount++;
+
+            // 2. Shrink Angry Button & Grow Forgive Button
+            forgiveScale += 0.08;
+            forgiveBtn.style.transform = `scale(${Math.min(forgiveScale, 1.25)})`;
+
+            // 3. Dodge position slightly on mobile
+            const randomX = (Math.random() - 0.5) * 120;
+            const randomY = (Math.random() - 0.5) * 60;
+            const currentShrink = Math.max(0.6, 1 - angryCount * 0.07);
+
+            angryBtn.style.transform = `translate(${randomX}px, ${randomY}px) scale(${currentShrink})`;
+        }
+
+        /* -------------------------------------------------------------
+         * 5. FORGIVE ACTION (CONFETTI & CELEBRATION)
+         * ------------------------------------------------------------- */
+        function handleForgive(e) {
+            if (e) e.stopPropagation();
+            playCelebrationSound();
+
+            document.getElementById('sadAvatar').classList.add('hidden');
+            document.getElementById('happyAvatar').classList.remove('hidden');
+
+            document.getElementById('mainQuestion').innerText = "เย้!! หายโกรธเค้าแล้ว 🥰❤️";
+            document.getElementById('subQuestion').innerText = "ขอบคุณน้าาา สัญญาว่าจะทำตัวน่ารักๆ!";
+            document.getElementById('buttonGroup').classList.add('hidden');
+            document.getElementById('successBanner').classList.remove('hidden');
+
+            // Trigger Confetti Explosion
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FF69B4', '#FFB6C1', '#FF4D6D', '#FFFFFF']
+                });
+
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 60,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 60,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 250);
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 6. EDITABLE LOVE LETTER LOGIC
+         * ------------------------------------------------------------- */
+        let isEditing = false;
+
+        function toggleEditLetter(e) {
+            if (e) e.stopPropagation();
+            const display = document.getElementById('letterDisplay');
+            const form = document.getElementById('letterEditForm');
+            const icon = document.getElementById('editIcon');
+            const textarea = document.getElementById('letterInput');
+
+            isEditing = !isEditing;
+
+            if (isEditing) {
+                const currentP1 = document.getElementById('letterTextP1').innerText;
+                const currentP2 = document.getElementById('letterTextP2').innerText;
+                textarea.value = `${currentP1}\n\n${currentP2}`;
+
+                display.classList.add('hidden');
+                form.classList.remove('hidden');
+                icon.className = 'fas fa-times';
+            } else {
+                display.classList.remove('hidden');
+                form.classList.add('hidden');
+                icon.className = 'fas fa-pencil';
+            }
+        }
+
+        function saveLetter(e) {
+            if (e) e.stopPropagation();
+            const textarea = document.getElementById('letterInput');
+            const val = textarea.value.trim();
+
+            if (val) {
+                const paragraphs = val.split('\n\n');
+                document.getElementById('letterTextP1').innerText = paragraphs[0] || val;
+                document.getElementById('letterTextP2').innerText = paragraphs[1] || '';
+            }
+
+            toggleEditLetter();
+        }
+
+        /* -------------------------------------------------------------
+         * 7. APOLOGY COUPON STAMP REDEEM ACTION
+         * ------------------------------------------------------------- */
+        function redeemCoupon(btn, e) {
+            if (e) e.stopPropagation();
+            
+            const card = btn.closest('.relative');
+            const stamp = card.querySelector('.stamp-badge');
+
+            btn.classList.add('hidden');
+            stamp.classList.remove('hidden');
+
+            playCelebrationSound();
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 25,
+                    spread: 40,
+                    origin: { y: 0.7 },
+                    colors: ['#FFB6C1', '#FF4D6D']
+                });
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * 8. MINI GAME BURST
+         * ------------------------------------------------------------- */
+        function burstHearts(e) {
+            if (e) e.stopPropagation();
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const fakeEvent = {
+                        clientX: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+                        clientY: window.innerHeight / 2 + (Math.random() - 0.5) * 200
+                    };
+                    createTouchRipple(fakeEvent);
+                }, i * 80);
+            }
+        }
+
+        /* -------------------------------------------------------------
+         * INITIALIZATION ON WINDOW LOAD
+         * ------------------------------------------------------------- */
+        window.onload = function() {
+            createFloatingHearts();
+        };
+    </script>
+</body>
+</html>
